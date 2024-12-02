@@ -1,0 +1,49 @@
+total = 0
+dirlist = {}
+
+prevdirbuffer = []
+currentdir = []
+filesize = 0
+value = {}
+ls = False
+while True:
+    data = input("enter data ").split()
+    if data[0] == "end":
+        value.update({"files":filesize})
+        dirlist[prevdirbuffer[-1]][currentdir]=value
+        break
+    if '/' in data:
+        currentdir = data[2]
+        dirlist.update({data[2]:value})
+    if data[1] == 'cd' and '/' not in data:
+        ls = False
+        value.update({"files":filesize})
+        filesize = 0
+        value = {}
+        if data[2] == '..':
+            currentdir = prevdirbuffer[-1]
+            del prevdirbuffer[-1]
+        else:    
+            prevdirbuffer.append(currentdir)
+            currentdir = data[2]    
+    if data[1] == 'ls':
+        
+        if currentdir != '/':
+            dirlist[prevdirbuffer[-1]][currentdir]=value
+        ls = True
+    if ls and data[0] != "$":
+        if data[0] != 'dir':
+            filesize += int(data[0])
+        else:
+            value.update({data[1]:data[0]})
+
+    
+
+
+    
+
+    ##dirlist.update({currentdir:"yeet"})
+    
+
+print(currentdir)
+print(dirlist)
